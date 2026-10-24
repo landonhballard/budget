@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#237a57">
+  <title>My Budget</title>
+  <style>
+    :root{color-scheme:light;--ink:#202c27;--muted:#77817b;--line:#e7ebe7;--paper:#fff;--bg:#f5f7f4;--green:#237a57;--red:#b8564b;--shadow:0 8px 28px #1f362b0f}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer}.shell{max-width:1120px;padding:34px 24px 60px;margin:auto}
+    header{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:26px}.brand{display:flex;align-items:center;gap:12px}.brand-mark{width:42px;height:42px;display:grid;place-items:center;border-radius:14px;background:var(--green);color:#fff;font-size:21px}h1{margin:0;font-size:22px;letter-spacing:-.5px}.subtitle{color:var(--muted);font-size:13px;margin-top:2px}.period{display:flex;align-items:center;gap:8px;border:1px solid var(--line);padding:7px 11px;background:#fff;border-radius:10px}.period select{border:0;outline:0;background:transparent;color:inherit}
+    .summary{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:18px}.card,.panel{background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}.card{padding:20px 22px}.card-label{color:var(--muted);font-size:13px}.card-value{font-size:clamp(25px,4vw,34px);font-weight:700;letter-spacing:-1.1px;margin-top:8px}.card-note{color:var(--muted);font-size:12px;margin-top:4px}.available{background:#edf6ef;border-color:#dcecdf}.available .card-value{color:var(--green)}.negative{color:var(--red)!important}
+    .layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(290px,.9fr);gap:18px;align-items:start}.panel{padding:21px}.panel+.panel{margin-top:18px}.panel-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}h2{font-size:16px;margin:0;letter-spacing:-.2px}.small-muted{font-size:12px;color:var(--muted)}.tabs{display:inline-flex;gap:3px;padding:3px;background:#f1f4f1;border-radius:10px}.tab{border:0;background:transparent;padding:7px 11px;color:var(--muted);border-radius:8px;font-size:13px}.tab.active{background:#fff;color:var(--ink);box-shadow:0 1px 4px #1e33250f}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}label{font-size:12px;font-weight:600;color:#56615b}input,.field-input{width:100%;min-width:0;padding:10px 11px;border:1px solid #dfe5df;border-radius:9px;outline:none;background:#fff;color:var(--ink)}input:focus,.field-input:focus{border-color:#7db397;box-shadow:0 0 0 3px #237a5715}.primary{width:100%;margin-top:14px;padding:11px 14px;border:0;border-radius:10px;background:var(--green);color:#fff;font-weight:650}.primary:hover{background:#1d694a}
+    .list{border-top:1px solid var(--line)}.transaction{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:12px;padding:12px 1px;border-bottom:1px solid var(--line)}.transaction:last-child{border-bottom:0}.tx-main{min-width:0}.tx-title{font-weight:600;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.tx-meta{color:var(--muted);font-size:12px;margin-top:2px}.tx-amount{font-weight:700;white-space:nowrap}.tx-amount.income{color:var(--green)}.delete{border:0;background:transparent;color:#a4ada7;font-size:18px;width:28px;height:28px;border-radius:7px}.delete:hover{background:#f8eeee;color:var(--red)}.empty{text-align:center;padding:24px 10px 12px;color:var(--muted);font-size:13px}
+    .category-row{display:grid;grid-template-columns:minmax(75px,1fr) auto;gap:10px;align-items:center;padding:9px 0}.category-top{display:flex;justify-content:space-between;gap:8px;font-size:13px}.category-name{font-weight:600}.category-spend{color:var(--muted);white-space:nowrap}.bar{height:7px;background:#eef1ee;border-radius:99px;margin-top:7px;overflow:hidden}.bar-fill{height:100%;background:#75a98a;border-radius:inherit;transition:width .2s}.bar-fill.over{background:#d27c6d}.budget-input{width:94px;padding:7px 8px;text-align:right;font-size:12px;border-radius:8px}.budget-label{color:var(--muted);font-size:11px;text-align:right;margin-top:3px}.category-empty{color:var(--muted);font-size:13px;padding:9px 0}.footnote{text-align:center;color:#8a938d;font-size:11px;padding-top:18px}
+    @media(max-width:760px){.shell{padding:24px 15px 40px}.layout{grid-template-columns:1fr}.summary{gap:9px}.card{padding:15px 14px}.card-value{font-size:25px}}@media(max-width:480px){header{align-items:flex-start;flex-direction:column}.period{align-self:stretch;justify-content:space-between}.transaction{gap:7px}.tx-amount{font-size:13px}.panel{padding:17px 15px}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div class="brand"><div class="brand-mark">↗</div><div><h1>My Budget</h1><div class="subtitle">A clear view of your money</div></div></div>
+      <div class="period"><span aria-hidden="true">◷</span><select id="periodSelect" aria-label="Choose summary period"><option value="month">This month</option><option value="all">All time</option></select></div>
+    </header>
+    <section class="summary" aria-label="Budget summary">
+      <article class="card available"><div class="card-label">Available to spend</div><div class="card-value" id="available">$0.00</div><div class="card-note">Income minus expenses for this period</div></article>
+      <article class="card"><div class="card-label">Income</div><div class="card-value" id="incomeTotal">$0.00</div><div class="card-note">Money received this period</div></article>
+      <article class="card"><div class="card-label">Expenses</div><div class="card-value" id="expenseTotal">$0.00</div><div class="card-note">Money spent this period</div></article>
+    </section>
+    <main class="layout">
+      <div>
+        <section class="panel">
+          <div class="panel-heading"><h2>Add a transaction</h2><div class="tabs" role="tablist" aria-label="Transaction type"><button class="tab active" id="expenseTab" type="button">Expense</button><button class="tab" id="incomeTab" type="button">Income</button></div></div>
+          <form id="entryForm"><div class="form-grid">
+            <div class="field"><label for="amount">Amount</label><input id="amount" type="number" min="0.01" step="0.01" placeholder="0.00" required></div>
+            <div class="field"><label for="category">Category</label><select class="field-input" id="category"></select></div>
+            <div class="field full"><label for="description">What was it for?</label><input id="description" maxlength="60" placeholder="e.g. Textbooks, groceries, paycheck"></div>
+            <div class="field full"><label for="date">Date</label><input id="date" type="date" required></div>
+          </div><button class="primary" id="submitButton" type="submit">Add expense</button></form>
+        </section>
+        <section class="panel"><div class="panel-heading"><h2>Recent transactions</h2><span class="small-muted" id="transactionCount">0 entries</span></div><div class="list" id="transactionList"></div></section>
+      </div>
+      <aside>
+        <section class="panel"><div class="panel-heading"><h2>Spending by category</h2><span class="small-muted" id="categoryPeriod">This month</span></div><div id="categoryList"></div></section>
+        <section class="panel"><div class="panel-heading"><h2>Monthly limits</h2></div><div class="small-muted" style="margin-top:-9px;margin-bottom:10px">Set a limit for each category. Leave blank if you don't need one.</div><div id="budgetList"></div></section>
+      </aside>
+    </main>
+    <div class="footnote">Your entries are saved in this browser on this device.</div>
+  </div>
+  <script>
+  (()=>{
+    const categories=["School","Food","Fun","Housing","Transportation","Bills","Health","Other"],storageKey="my-budget-app-v1";
+    let state={transactions:[],budgets:{}},entryType="expense",period="month";
+    try{const saved=JSON.parse(localStorage.getItem(storageKey)||"null");if(saved&&Array.isArray(saved.transactions)){state.transactions=saved.transactions;state.budgets=saved.budgets||{}}}catch(_){}
+    const $=id=>document.getElementById(id),money=value=>new Intl.NumberFormat(undefined,{style:"currency",currency:"USD"}).format(Number(value)||0);
+    const esc=value=>String(value).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[ch]);
+    const localDate=date=>{const d=new Date(date);d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)};
+    const currentMonth=localDate(new Date()).slice(0,7),monthEntries=()=>state.transactions.filter(t=>String(t.date).slice(0,7)===currentMonth),shownEntries=()=>period==="all"?state.transactions:monthEntries();
+    function save(){try{localStorage.setItem(storageKey,JSON.stringify(state))}catch(_){}}
+    function renderSummary(){const entries=shownEntries(),income=entries.filter(t=>t.type==="income").reduce((a,t)=>a+Number(t.amount),0),expenses=entries.filter(t=>t.type==="expense").reduce((a,t)=>a+Number(t.amount),0),available=income-expenses;$('available').textContent=money(available);$('available').classList.toggle('negative',available<0);$('incomeTotal').textContent=money(income);$('expenseTotal').textContent=money(expenses)}
+    function renderTransactions(){const entries=shownEntries().slice().sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id);$('transactionCount').textContent=`${entries.length} ${entries.length===1?'entry':'entries'}`;if(!entries.length){$('transactionList').innerHTML='<div class="empty">No transactions yet. Add income or an expense above to get started.</div>';return}$('transactionList').innerHTML=entries.map(t=>{const date=new Date(t.date+'T12:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}),sign=t.type==='income'?'+':'−';return `<div class="transaction"><div class="tx-main"><div class="tx-title">${esc(t.description||t.category)}</div><div class="tx-meta">${esc(t.category)} · ${date}</div></div><div class="tx-amount ${t.type==='income'?'income':''}">${sign}${money(t.amount)}</div><button class="delete" type="button" aria-label="Delete transaction" data-delete="${esc(t.id)}">×</button></div>`}).join('')}
+    function renderCategories(){const expenses=monthEntries().filter(t=>t.type==='expense'),totals={};expenses.forEach(t=>totals[t.category]=(totals[t.category]||0)+Number(t.amount));const used=categories.filter(c=>totals[c]||Number(state.budgets[c])>0);if(!used.length){$('categoryList').innerHTML='<div class="category-empty">Your category spending will show here.</div>';return}$('categoryList').innerHTML=used.map(c=>{const spent=totals[c]||0,limit=Number(state.budgets[c])||0,ratio=limit?Math.min(100,spent/limit*100):(spent?100:0),over=limit>0&&spent>limit;return `<div class="category-row"><div><div class="category-top"><span class="category-name">${esc(c)}</span><span class="category-spend">${money(spent)}${limit?' / '+money(limit):''}</span></div><div class="bar"><div class="bar-fill ${over?'over':''}" style="width:${ratio}%"></div></div></div><span class="small-muted">${limit?(over?'Over':Math.round(spent/limit*100)+'%'):''}</span></div>`}).join('')}
+    function renderBudgets(){$('budgetList').innerHTML=categories.map(c=>{const spent=monthEntries().filter(t=>t.type==='expense'&&t.category===c).reduce((a,t)=>a+Number(t.amount),0);return `<div class="category-row"><div><div class="category-name" style="font-size:13px">${esc(c)}</div><div class="budget-label">spent ${money(spent)}</div></div><input class="budget-input" type="number" min="0" step="0.01" placeholder="No limit" aria-label="${esc(c)} monthly limit" data-budget="${esc(c)}" value="${state.budgets[c]||''}"></div>`}).join('')}
+    function render(){renderSummary();renderTransactions();renderCategories();renderBudgets()}
+    function setType(type){entryType=type;$('expenseTab').classList.toggle('active',type==='expense');$('incomeTab').classList.toggle('active',type==='income');$('submitButton').textContent=type==='expense'?'Add expense':'Add income';$('category').disabled=type==='income'}
+    $('category').innerHTML=categories.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
+    $('expenseTab').addEventListener('click',()=>setType('expense'));$('incomeTab').addEventListener('click',()=>setType('income'));
+    $('periodSelect').addEventListener('change',e=>{period=e.target.value;$('categoryPeriod').textContent=period==='month'?'This month':'All categories';render()});
+    $('entryForm').addEventListener('submit',e=>{e.preventDefault();const amount=Number($('amount').value);if(!Number.isFinite(amount)||amount<=0)return;state.transactions.push({id:Date.now()+Math.random(),type:entryType,amount:Math.round(amount*100)/100,category:entryType==='income'?'Income':$('category').value,description:$('description').value.trim(),date:$('date').value});save();$('amount').value='';$('description').value='';render()});
+    $('transactionList').addEventListener('click',e=>{const button=e.target.closest('[data-delete]');if(!button)return;state.transactions=state.transactions.filter(t=>String(t.id)!==button.dataset.delete);save();render()});
+    $('budgetList').addEventListener('change',e=>{const input=e.target.closest('[data-budget]');if(!input)return;const value=Number(input.value);if(input.value===''||value<=0)delete state.budgets[input.dataset.budget];else state.budgets[input.dataset.budget]=Math.round(value*100)/100;save();render()});
+    $('date').value=localDate(new Date());render();
+  })();
+  </script>
+</body>
+</html>
